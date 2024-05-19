@@ -1,0 +1,17 @@
+{
+  "name": "zakozip",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/main.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "extract-zip": "^2.0.1",
+    "fs-extra": "^11.2.0",
+    "log-update": "^6.0.0"
+  }
+}
