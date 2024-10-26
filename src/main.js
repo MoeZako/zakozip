@@ -74,6 +74,10 @@ async function moveCategory(patterns, category) {
   );
 }
 
+async function excludeSpecified(patterns, category) {
+  await Promise.all(patterns.map((pattern) => rimraf(`dist/${category}/${pattern}`, { glob: true })));
+}
+
 async function main() {
   const save = "file.zip";
   const config = JSON.parse(atob(process.env.ZIP_ENV));
@@ -81,6 +85,7 @@ async function main() {
   await downloadZip(update.url, save);
   await extractZip(save);
   await moveCategory(config.keepPatterns, config.category);
+  await excludeSpecified(config.excludePatterns, config.category);
   console.log("done.");
 }
 
