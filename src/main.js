@@ -13,7 +13,9 @@ async function checkUpdates(config) {
     };
   }
   const res = await fetch(config.updateURL, config.fetchOptions);
-  const data = await res.json();
+  const text = await res.text();
+  console.log(text);
+  const data = JSON.parse(text);
   if (!data?.success) throw new Error(data ? JSON.stringify(data) : "Failed to get latest update.");
   return data.value;
 }
