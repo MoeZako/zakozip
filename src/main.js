@@ -3,6 +3,7 @@ import extract from "extract-zip";
 import { mkdir, open } from "fs/promises";
 import { move } from "fs-extra";
 import logUpdate from "log-update";
+import { rimraf } from "rimraf";
 
 const cwd = process.cwd();
 
