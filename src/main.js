@@ -1,6 +1,6 @@
 import path from "path";
 import extract from "extract-zip";
-import { mkdir, open } from "fs/promises";
+import { mkdir, open, writeFile } from "fs/promises";
 import { move } from "fs-extra";
 import logUpdate from "log-update";
 import { rimraf } from "rimraf";
@@ -40,7 +40,8 @@ async function downloadZip(url, save) {
             write: async (chunk) => {
               await handle.write(chunk);
               current += chunk.length;
-              !!process.env.SHOW_PROGRESS && logUpdate(`\
+              !!process.env.SHOW_PROGRESS &&
+                logUpdate(`\
 Current:  ${current.toString().padStart(16)}
 Total:    ${total.toString().padStart(16)}
 Progress: ${((current * 100) / total).toFixed(4).padStart(16)} %
@@ -75,6 +76,7 @@ async function moveCategory(patterns, category) {
       await move(moveSrc, moveDist);
     })
   );
+  return categoryDir;
 }
 
 async function excludeSpecified(patterns, category) {
@@ -87,8 +89,9 @@ async function main() {
   const update = await checkUpdates(config);
   await downloadZip(update.url, save);
   await extractZip(save);
-  await moveCategory(config.keepPatterns, config.category);
+  const categoryDir = await moveCategory(config.keepPatterns, config.category);
   await excludeSpecified(config.excludePatterns, config.category);
+  await writeFile(path.resolve(categoryDir, "update.json"), JSON.stringify(update));
   console.log("done.");
 }
 
