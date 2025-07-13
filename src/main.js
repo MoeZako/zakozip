@@ -10,15 +10,18 @@ const cwd = process.cwd();
 async function checkUpdates(config) {
   const directURL = process.env.DIRECT_URL;
   if (typeof directURL === "string" && directURL !== "" && directURL !== "auto") {
+    console.log("Direct URL from environment.");
     return {
       url: directURL,
     };
   }
   if (config.directURL) {
+    console.log("Direct URL from config.");
     return {
       url: config.directURL,
     };
   }
+  console.log("Looking for update URL.");
   const res = await fetch(config.updateURL, config.fetchOptions);
   const text = await res.text();
   console.log(text);
