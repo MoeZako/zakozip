@@ -8,9 +8,10 @@ import { rimraf } from "rimraf";
 const cwd = process.cwd();
 
 async function checkUpdates(config) {
-  if (typeof process.env.DIRECT_URL === "string") {
+  const directURL = process.env.DIRECT_URL;
+  if (typeof directURL === "string" && directURL !== "" && directURL !== "auto") {
     return {
-      url: process.env.DIRECT_URL,
+      url: directURL,
     };
   }
   if (config.directURL) {
