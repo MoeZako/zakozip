@@ -1,9 +1,11 @@
 name: Run All
 on:
-  push:
-    branches: ["main"]
-
   workflow_dispatch:
+    inputs:
+      directURL:
+        description: 'The direct url for zip.'
+        type: string
+        required: false
 
 permissions:
   contents: read
@@ -38,6 +40,7 @@ jobs:
         run: npm run start
         env:
           ZIP_ENV: ${{ secrets.ZIP_ENV }}
+          DIRECT_URL: ${{ inputs.directURL }}
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact
